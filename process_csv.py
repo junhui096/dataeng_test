@@ -1,4 +1,5 @@
 from decimal import Decimal
+from sys import argv
 
 
 def process_dataset(input_name, output_name):
@@ -29,15 +30,17 @@ def get_output_header():
 
 def split_name_into_first_and_last_name(name):
     name_chars = name.split()
-    first_name = name_chars[0:-1]
+    first_name = " ".join(name_chars[0:-1])
     last_name = name_chars[-1]
     return first_name, last_name
 
 
 def remove_leading_zeros(price):
-    return price.lstrip("0")
+    return price.strip().lstrip("0")
 
 
 def set_above_100(price):
     return Decimal(price) > 100
 
+
+process_dataset(argv[1], argv[2])
