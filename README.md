@@ -1,34 +1,31 @@
-# DSAID Data Engineering Technical Test
+# DSAID Data Engineering Technical Test Documentation
 
 This test is split into 3 sections, **data pipelines**, **databases** and **system design**. 
 
-## Submission Guidelines
-Please create a Github repository containing your submission and send us an email containing a link to the repository.
-
-Dos:
-- Frequent commits
-- Descriptive commit messages
-- Clear documentation
-- Comments in your code
-
-Donts:
-- Only one commit containing all the files
-- Submitting a zip file
-- Sparse or absent documentation
-- Code which is hard to read
+1. Clone the repo into the home directory, and cd into it.
 
 ## Section 1: Data Pipelines
-The objective of this section is to design and implement a solution to process a data file on a regular interval (e.g. daily). Given the test data file `dataset.csv`, design a solution to process the file, along with the scheduling component. The expected output of the processing task is a CSV file including a header containing the field names.
+Refer to the file *process_csv.py* for the python code that implements the various data processing requirements.
 
-You can use common scheduling solutions such as `cron` or `airflow` to implement the scheduling component. You may assume that the data file will be available at 1am everyday. Please provide documentation (a markdown file will help) to explain your solution.
+The program accepts as command-line arguments the *input_file_name* and *output_file_name*.
 
-Processing tasks:
-- Split the `name` field into `first_name`, and `last_name`
-- Remove any zeros prepended to the `price` field
-- Delete any rows which do not have a `name`
-- Create a new field named `above_100`, which is `true` if the price is strictly greater than 100
+The file *output.csv* is the file of the processed dataset.
 
-*Note: please submit the processed dataset too.*
+There exists a shell script *scheduler.sh* with the following command:
+
+    /usr/bin/python ~/dataeng_test/process_csv.py ~/dataeng_test/dataset.csv ~/dataeng_test/output.csv
+ 
+that follows the following format:
+
+    <path_to_python_installation> <path_to_repo>/process_csv.py <path_to_input_file> <path_to_output_file>
+
+You can change the script accordingly based on the above format.
+
+Next, you can install a crontab to schedule the jobs at 1am daily.
+
+    crontab - e   # opens the editor to add a cron job
+    0 1 * * * /<path_to_repo>/scheduler.sh   # schedule cron job
+
 
 ## Section 2: Databases
 You are appointed by a car dealership to create their database infrastructure. There is only one store. In each business day, cars are being sold by a team of salespersons. Each transaction would contain information on the date and time of transaction, customer transacted with, and the car that was sold. 
