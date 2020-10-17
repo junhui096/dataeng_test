@@ -46,10 +46,14 @@ Finally, you can log into the running docker container, to ensure that all table
     psql >> \dt 
 
 ## Section 3: System Design
-You are designing data infrastructure on the cloud for a company whose main business is in processing images. 
+I have used the services offered by Google Cloud Platform to design the image processing pipeline.
 
-The company has a web application which collects images uploaded by customers. The company also has a separate web application which provides a stream of images using a Kafka stream. The company’s software engineers have already some code written to process the images. The company  would like to save processed images for a minimum of 7 days for archival purposes. Ideally, the company would also want to be able to have some Business Intelligence (BI) on key statistics including number and type of images processed, and by which customers.
+Refer to *system_design_task3.jpg* for the diagram.
 
-Produce a system architecture diagram (e.g. Visio, Powerpoint) using any of the commercial cloud providers' ecosystem to explain your design. Please also indicate clearly if you have made any assumptions at any point.
-
+1. Assuming that Kafka is deployed on GCP, the Kafka connector has to be installed, so that all messages published to a specifc topic in Kafka, will be published to the PubSub queue too.
+2. Deploy a cloud function that is triggered once a new message is published to the pubsub topic.
+3. The cloud function should process the images and write the processed images to a cloud storage bucket(GCS), in coldline storage class, assuming it is for archival purposes and rarely accessed.
+4. The bucket should also implement an object lifecycle management policy to delete an image after 7 days.
+5. The cloud function should produce logs, which are synced to the cloud logging platform. These logs should be structured with the necessary fields for analysis.
+6. These logs can be periodically exported to a data warehouse, such as BigQuery for further analysis. The scheduling of these jobs can be done via cloud scheduler.
 
