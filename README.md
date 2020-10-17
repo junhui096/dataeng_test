@@ -45,6 +45,8 @@ Finally, you can log into the running docker container, to ensure that all table
     docker exec -it cars psql -U docker -d car
     psql >> \dt 
 
+Note: For the database design, I did not create a separate table for salesperson, since I assume that it does not have additional properties apart from a unique identifier.
+
 ## Section 3: System Design
 I have used the services offered by Google Cloud Platform to design the image processing pipeline.
 
