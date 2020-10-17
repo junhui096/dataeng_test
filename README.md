@@ -28,28 +28,22 @@ Next, you can install a crontab to schedule the jobs at 1am daily.
 
 
 ## Section 2: Databases
-You are appointed by a car dealership to create their database infrastructure. There is only one store. In each business day, cars are being sold by a team of salespersons. Each transaction would contain information on the date and time of transaction, customer transacted with, and the car that was sold. 
+Refer to *er_diagram.jpg* for the ER diagram of the database design.
 
-The following are known:
-- Both used and new cars are sold.
-- Each car can only be sold by one salesperson.
-- There are multiple manufacturers’ cars sold.
-- Each car has the following characteristics:
-- Manufacturer
-- Model name
-- Model variant
-- Serial number
-- Weight
-- Engine cubic capacity
-- Price
+To launch the postgres container, execute the following steps:
 
-Each sale transaction contains the following information:
-- Customer Name
-- Customer Phone
-- Salesperson
-- Characteristics of car sold
+First, build the docker image from the docker file.
 
-Set up a PostgreSQL database using the base `docker` image [here](https://hub.docker.com/_/postgres) given the above. We expect at least a `Dockerfile` which will stand up your database with the DDL statements to create the necessary tables. Produce entity-relationship diagrams as necessary to illustrate your design.
+    docker build --tag db:1.0 .
+
+Next, run the docker image
+
+    docker run --name cars -d db:1.0
+
+Finally, you can log into the running docker container, to ensure that all tables are successfully created.
+
+    docker exec -it cars psql -U docker -d car
+    psql >> \dt 
 
 ## Section 3: System Design
 You are designing data infrastructure on the cloud for a company whose main business is in processing images. 
